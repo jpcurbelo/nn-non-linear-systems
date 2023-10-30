@@ -1,0 +1,7 @@
+## file extensions
+**/*.pyc
+**/*.h5
+.env
+
+## folder
+venv-*
