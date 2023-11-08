@@ -9,7 +9,7 @@ using JSON, FileIO
 
 
 function print_help()
-    println("Usage: julia findRKgroebner.jl <num-stages> <order>")
+    println("Usage: julia order_conditions_eqs.jl <num-stages> <order>")
     println()
 end
 
@@ -62,10 +62,33 @@ function rk_system2groebner(variables, equations, file_name)
         equations[i] = eq * (- 1 / num_coeff)
     end
 
+    ## Identify the equation terms
+    equation_terms = []
+    for (i, eq) in enumerate(equations)
+        terms = []
+        for term in eq.args
+            term = :($term)
+            term = simplify(term)
+            push!(terms, term)
+        end
+        push!(equation_terms, terms)
+    end
+
     # Create a dictionary with the data
     variables_str = string.(variables)
     equations_str = string.(equations)
-    data = Dict("variables" => variables_str, "equations" => equations_str)
+
+    equation_terms_str = []
+    for eq_term in equation_terms
+        eq_term_str = string.(eq_term)
+        push!(equation_terms_str, eq_term_str)
+    end
+    # equation_terms_str = string.(equation_terms_str)
+
+    println("\nEquation terms:")    
+    println(equation_terms_str)
+
+    data = Dict("variables" => variables_str, "equations" => equations_str, "equation_terms" => equation_terms_str)
 
     # Save the data in a JSON file
     json_str = JSON.json(data)
@@ -89,10 +112,10 @@ function main()
 
             variables, equations = generateRootedTrees(num_stages, order)
 
-            println("\nVariables for the RK(s=$(num_stages), p=$(order)):")
-            println(variables)
-            println("\nEquations for the RK(s=$(num_stages), p=$(order)):")
-            println(equations)
+            # println("\nVariables for the RK(s=$(num_stages), p=$(order)):")
+            # println(variables)
+            # println("\nEquations for the RK(s=$(num_stages), p=$(order)):")
+            # println(equations)
 
             equations_groebner = rk_system2groebner(variables, equations, file_name)
 
