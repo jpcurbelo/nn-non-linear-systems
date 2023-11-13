@@ -47,6 +47,7 @@ function generateRootedTrees(s, p, exp = true)
         for t in RootedTreeIterator(o)
             # Compute the residual order condition and append it to the results array
             residual = residual_order_condition(t, rk)
+            println(t, "Residual: ", residual), 
             push!(equations, residual)
         end
     end
@@ -57,38 +58,48 @@ end
 
 function rk_system2groebner(variables, equations, file_name) 
 
+    println("\nConverting the RK equations to a Groebner basis...")
+    println(equations)
+
+
+    ## Convert the equations to a Groebner basis
     for (i, eq) in enumerate(equations)
+        println("\nEquation $(i): ", eq)
+        println("eg.args: ", eq.args)
         num_coeff = eq.args[1]
         equations[i] = eq * (- 1 / num_coeff)
     end
 
-    ## Identify the equation terms
-    equation_terms = []
-    for (i, eq) in enumerate(equations)
-        terms = []
-        for term in eq.args
-            term = :($term)
-            term = simplify(term)
-            push!(terms, term)
-        end
-        push!(equation_terms, terms)
-    end
+    println(equations)
+
+    # ## Identify the equation terms
+    # equation_terms = []
+    # for (i, eq) in enumerate(equations)
+    #     terms = []
+    #     for term in eq.args
+    #         term = :($term)
+    #         term = simplify(term)
+    #         push!(terms, term)
+    #     end
+    #     push!(equation_terms, terms)
+    # end
 
     # Create a dictionary with the data
     variables_str = string.(variables)
     equations_str = string.(equations)
 
-    equation_terms_str = []
-    for eq_term in equation_terms
-        eq_term_str = string.(eq_term)
-        push!(equation_terms_str, eq_term_str)
-    end
+    # equation_terms_str = []
+    # for eq_term in equation_terms
+    #     eq_term_str = string.(eq_term)
+    #     push!(equation_terms_str, eq_term_str)
+    # end
     # equation_terms_str = string.(equation_terms_str)
 
-    println("\nEquation terms:")    
-    println(equation_terms_str)
+    # println("\nEquation terms:")    
+    # println(equation_terms_str)
 
-    data = Dict("variables" => variables_str, "equations" => equations_str, "equation_terms" => equation_terms_str)
+    # data = Dict("variables" => variables_str, "equations" => equations_str, "equation_terms" => equation_terms_str)
+    data = Dict("variables" => variables_str, "equations" => equations_str)
 
     # Save the data in a JSON file
     json_str = JSON.json(data)

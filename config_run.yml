@@ -1,0 +1,12 @@
+
+problem_folder: ERK_equations_s2p2
+
+# Model configuration
+# Name of file containing initial estimate of parameters - null if no initial estimate
+load_initial_estimate: best_estimate_231113_161613
+
+# Name of file to save best estimate of parameters - save: False if no need to save
+save_best_solution: True
+
+# Epochs to run
+epochs: 501
