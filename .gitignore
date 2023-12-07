@@ -6,4 +6,8 @@
 ## folder
 venv-*
 ERK_equations_s4p4/*
-vicky_case_strang/*
+ERK_equations_s5p5/*
+ERK_equations_s6p5/*
+order_cond_sp4st3/*
+order_cond_sp4st4/*
+order_cond_sp4st4_strang/*

@@ -1,25 +1,25 @@
 ##Strang has 4 stages instead of 3
 
 
-# problem_folder: ERK_equations_s2p2
-problem_folder: ERK_equations_s4p4
+problem_folder: ERK_equations_s2p2
+# problem_folder: ERK_equations_s4p4
 # problem_folder: ERK_equations_s5p5
 # problem_folder: ERK_equations_s6p5
-# problem_folder: order_cond_sp4st4
-# problem_folder: order_cond_sp4st4_strang
+# problem_folder: viky_case_strang
 
 # Model configuration
 # Name of file containing initial estimate of parameters 
 # - null if no initial estimate 
 # - True if load best estimate from previous run (latest file in folder)
 # load_initial_estimate:
-load_initial_estimate: False
+load_initial_estimate: True
 
 # Name of file to save best estimate of parameters - save: False if no need to save
 save_best_solution: True
 
 # Epochs to run
-epochs: 11
+epochs: 21
+
 # Lambda for regularization   1e-4
 lambda_regularization: 0.0
 
@@ -28,9 +28,9 @@ learning_rate:
   0: 1e-2
   60: 5e-3
   80: 1e-3
-  # 0: 5e-5
-  # 40: 1e-5
-  # 80: 5e-6
+  # 0: 1e-6
+  # 60: 5e-7
+  # 80: 1e-7
   # 0: 1e-3
   # 10: 5e-4
   # 20: 1e-4
