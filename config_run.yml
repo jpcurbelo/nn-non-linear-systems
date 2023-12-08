@@ -1,8 +1,8 @@
 ##Strang has 4 stages instead of 3
 
 
-problem_folder: ERK_equations_s2p2
-# problem_folder: ERK_equations_s4p4
+# problem_folder: ERK_equations_s2p2
+problem_folder: ERK_equations_s4p4
 # problem_folder: ERK_equations_s5p5
 # problem_folder: ERK_equations_s6p5
 # problem_folder: order_cond_sp4st4
@@ -19,15 +19,15 @@ load_initial_estimate: False
 save_best_solution: True
 
 # Epochs to run
-epochs: 1001
+epochs: 5000
 # Lambda for regularization   1e-4
 lambda_regularization: 0.0
 
 # Learning rate (specify lr to use starting specific epoch - % of total epochs, 0 = start of training)
 learning_rate: 
-  0: 1e-3
-  60: 5e-4
-  80: 1e-4
+  # 0: 1e-3
+  # 60: 5e-4
+  # 80: 1e-4
   # 0: 5e-5
   # 40: 1e-5
   # 80: 5e-6
@@ -41,8 +41,9 @@ learning_rate:
   # 70: 5e-7
   # 80: 1e-7
   # 90: 5e-8
-  # 0: 1e-8
-  # 20: 5e-9
-  # 40: 1e-9
-  # 60: 5e-10
-  # 80: 1e-10
+
+  0: 1e-3
+  20: 5e-4
+  40: 1e-4
+  60: 5e-5
+  80: 1e-5
