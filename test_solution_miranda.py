@@ -13,11 +13,12 @@ np.set_printoptions(precision=64)
 # Define constants
 tree_folder = "RK_rootedtrees"
 solution_folder = "RK_solutions"
-rk_problem = "RK_s3p3"
+rk_problem = "RK_s16p10"   #"RK_s3p3"    #ERK_equations_s16p10
 # Split to get the sNpM part
 rk_problem_sp = rk_problem.split("_")[-1]
 # solution_file = rk_problem + "_solution_kutta.txt"
-solution_file = rk_problem + "_solution_v0.txt"
+# solution_file = rk_problem + "_solution_v0.txt"
+solution_file = rk_problem + "_solution.txt"
 tree_file = "ERK_equations_" + rk_problem_sp + ".json"
 solution_path = os.path.join(solution_folder, solution_file)
 tree_path = os.path.join(tree_folder, tree_file)
@@ -38,6 +39,11 @@ def main():
     # 2 - Determine bounds a=min(coeffs), b=max(coeffs)
     min_val = min(coeffs) - epsilon_value   #100*np.sqrt(epsilon_value)
     max_val = max(coeffs) + epsilon_value   #100*np.sqrt(epsilon_value)
+    # Find max absolute value
+    max_abs_val = max(abs(min_val), abs(max_val))
+    # Define interval
+    min_val = -max_abs_val
+    max_val = max_abs_val
     
     # # Define interval
     # X = [min_val, max_val]
@@ -61,14 +67,20 @@ def main():
     for eq in equations_sym:
         # Loop over the variables and substitute by min and max and evaluate
         # Print intervals eq(vars, min) and eq(vars, max)
-        for var in variables_sym:
+        for vi, var in enumerate(variables_sym):
             if eq.has(var):
+                
+                # a_val = min_val / (vi + 1)
+                # b_val = max_val / (vi + 1)
+                a_val = min_val
+                b_val = max_val
+                
                 # Create copy of dict
                 X_dict_min = X_dict.copy()
-                X_dict_min[var] = min_val 
+                X_dict_min[var] = a_val
                 
                 X_dict_max = X_dict.copy()
-                X_dict_max[var] = max_val
+                X_dict_max[var] = b_val
                 
                 
                 
@@ -78,25 +90,26 @@ def main():
                 
                 root_found = np.sign(eq_subs_min) != np.sign(eq_subs_max)
                 
-                print(f"{str(eq):45s} -> {str(var):6s} -> interval " \
-                    f"= ({eq_subs_min:.3e}, {eq_subs_max:.3e}) " \
-                    f"-> root found = {root_found}")  
+                # print(f"{str(eq):45s} -> {str(var):6s} -> interval " \
+                #     f"= ({eq_subs_min:.3e}, {eq_subs_max:.3e}) " \
+                #     f"-> root found = {root_found}")  
                 
                 if not root_found:
+                    print(f"-> root found = {root_found}")
                     # Create a function to evaluate the equation
                     # Substitute var by its symbol
                     X_dict_sym = X_dict.copy()
                     X_dict_sym[var] = var
-                    print(f"X_dict_sym: {X_dict_sym}")
+                    # print(f"X_dict_sym: {X_dict_sym}")
                     # Substitute values
                     eq_subs_sym = eq.subs(X_dict_sym)
-                    print(f"eq_subs_sym: {eq_subs_sym}")
+                    # print(f"eq_subs_sym: {eq_subs_sym}")
                     # Find roots
                     roots_eq = roots(eq_subs_sym)
                     print(f'min_val: {min_val}; max_val: {max_val}')
-                    print(f"roots_eq: {roots_eq}")
-                    # Plot eq_subs_sym in the interval [min_val, max_val]
-                    plot_equation(eq, eq_subs_sym, var, min_val, max_val)
+                    print(f"var {var}={X_dict[var]} -> roots_eq: {roots_eq}")
+                    # # # Plot eq_subs_sym in the interval [min_val, max_val]
+                    # # plot_equation(eq, eq_subs_sym, var, a_val, b_val)
                     
                     
 def plot_equation(equation, eq_subs_sym, var, min_value, max_value):

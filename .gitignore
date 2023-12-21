@@ -6,4 +6,5 @@
 ## folder
 venv-*
 ERK_equations_*/*
+RK_solutions/*
 order_cond_*/*
